@@ -20,11 +20,11 @@ public class PointBlock : BlockObject {
 
 	}
 
-	public override int GetBlockCode ()
+	public override BlockCode GetBlockCode ()
 	{
 		//기본 형태 0 , 3 , 6 , 9
-		Queue<int> Q1 = new Queue<int>(new[] { 1, 0, 0, 0 });
-		int blockCode = base.MakeBlockCode (Q1);	
+		BlockCode Q1 = new BlockCode('1','0','0','0');
+		BlockCode blockCode = base.MakeBlockCode (Q1);	
 		return blockCode;
 	}
 }

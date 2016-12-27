@@ -39,30 +39,18 @@ public abstract class BlockObject : MonoBehaviour {
 		this.blockDirectionCode = direction;
 	}
 
-	public abstract int GetBlockCode ();
+	public abstract BlockCode GetBlockCode ();
 
 	void OnMouseDown(){
 		BlockManager blockManager = GameObject.Find ("BlockManager").GetComponent<BlockManager>();
 		int[,] MovableMap = blockManager.MakeMovableMap();
 	}
 
-	protected int MakeBlockCode(Queue<int> Q1){
+	protected BlockCode MakeBlockCode(BlockCode Q1){
 		for (int i = 0; i < this.blockDirectionCode; i++) {
-			int temp = Q1.Dequeue();
-			Q1.Enqueue (temp);
-		}
+			Q1.RotateAsLeft();
+		}	
 
-		int blockCode = 0;
-		int radix = 1000;
-		for(int i = 0 ; i< 4; i++){
-			blockCode += Q1.Dequeue() * radix;
-			radix /= 10;
-		}
-
-		//Debug.Log ("block Code " + blockCode);
-
-		return blockCode;		
-
+		return Q1;
 	}
-
 }
