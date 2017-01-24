@@ -27,4 +27,8 @@ public class StraightBlock : BlockObject {
 		BlockCode blockCode = base.MakeBlockCode (Q1);	
 		return blockCode;
 	}
+
+	public void AAAA (){
+		Debug.Log ("CCC)");
+	}
 }

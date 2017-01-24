@@ -42,8 +42,8 @@ public abstract class BlockObject : MonoBehaviour {
 	public abstract BlockCode GetBlockCode ();
 
 	void OnMouseDown(){
-		BlockManager blockManager = GameObject.Find ("BlockManager").GetComponent<BlockManager>();
-		int[,] MovableMap = blockManager.MakeMovableMap();
+		
+
 	}
 
 	protected BlockCode MakeBlockCode(BlockCode Q1){
