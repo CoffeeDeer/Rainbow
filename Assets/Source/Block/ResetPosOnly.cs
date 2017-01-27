@@ -33,9 +33,9 @@ public class ResetPosOnly : MonoBehaviour {
 		float targetXPos = Mathf.Round (XPos);
 		float targetYPos = Mathf.Round (YPos);
 
-
 		for (int i = 0; i< 10; i ++) {
-			myForm.Translate(-1*(targetXPos -XPos)/10.0f ,(targetYPos - YPos)/10.0f,.0f,Space.World);
+			
+			myForm.Translate((targetXPos -XPos)/10.0f ,(targetYPos - YPos)/10.0f,.0f,Space.World);
 			yield return new WaitForSeconds(.03f);
 		}
 
