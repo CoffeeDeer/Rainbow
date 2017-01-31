@@ -39,9 +39,9 @@ public class Player : MonoBehaviour {
 			//거리의 차 
 			Vector3 distancediff = new Vector3 ( (xPos - transform.position.x), (yPos - transform.position.y), .0f);
 
-			//because player is moving has distancediff
+			//because player is moving has diff_distance
 			if (distancediff.magnitude > 0.10f) {
-				//reset for 3frame
+				//reset Position for 3frame
 				for (int i = 0; i < 3; i++) {
 					Vector3 temp = distancediff / 3;
 					transform.Translate (temp, Space.World);
@@ -87,7 +87,7 @@ public class Player : MonoBehaviour {
 			deltatime = 0;
 			while (true) {
 				//Debug.Log (deltatime);
-				if (deltatime > 0.25f)
+				if (deltatime > 0.23f)
 					break;
 				//Debug.Log ("movie");
 				transform.Translate (4 * Time.deltaTime * direction, Space.World);	
