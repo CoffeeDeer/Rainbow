@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 
-public class FixedBlock : MonoBehaviour {
+public class FixedBlock : MonoBehaviour,IPointerUpHandler,IPointerDownHandler {
 
 	Vector3 clickPos;
 	bool MouseFlag;
@@ -20,7 +20,7 @@ public class FixedBlock : MonoBehaviour {
 			timer += Time.deltaTime;
 	}
 
-	public void OnMouseUp()
+	public void OnPointerUp(PointerEventData e)
 	{
 		Vector3 NowPos = Input.mousePosition;
 		float Mag = Vector3.Magnitude (NowPos - clickPos);
@@ -31,7 +31,7 @@ public class FixedBlock : MonoBehaviour {
 		}
 	}
 
-	public void OnMouseDown()
+	public void OnPointerDown(PointerEventData e)
 	{
 		clickPos = Input.mousePosition;
 		clickPos.z = 0f;

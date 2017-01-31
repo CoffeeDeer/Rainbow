@@ -5,17 +5,13 @@ public class CameraControl : MonoBehaviour {
 	
 
 	// Use this for initialization
-	void Start () {
-		
-	}
+	void Start () {}
 	
 	// Update is called once per frame
-	void Update () {
-		
-		if (Input.GetMouseButtonDown (0)) {			
-			//StartCoroutine (CameraFocusChange());
-		}
-		//CameraFocusChange (reword);
+	void Update () {}
+
+	public void StartFocusChangeRoutine(){
+		StartCoroutine (CameraFocusChange());
 	}
 
 	IEnumerator CameraFocusChange(){
@@ -26,7 +22,7 @@ public class CameraControl : MonoBehaviour {
 		float passedTime = 0;
 
 		float nowViewFieldSize = camera.fieldOfView;
-		float goalviewFieldSIze = 11;
+		float goalviewFieldSIze = 9;
 
 		//1초 동안
 		while (true) {

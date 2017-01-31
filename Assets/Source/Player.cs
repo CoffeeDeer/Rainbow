@@ -5,6 +5,7 @@ public class Player : MonoBehaviour {
 
 	int[,] moveGuideMap;
 	Coroutine movingRoutine = null;
+	public GameObject PlayerTex;
 
 	// Use this for initialization
 	void Start () {
@@ -63,19 +64,20 @@ public class Player : MonoBehaviour {
 			switch (moveGuideMap [xPos, yPos]) {		
 			case 1:
 				direction = Vector3.down;
-				//PlayerTex.transform.localEulerAngles = new Vector3(-0.1f,87,270);
+				PlayerTex.transform.localEulerAngles = new Vector3(0.577f,448.688f,-42.999f);
 				break;
 			case 2:
 				direction = Vector3.right;
-				//PlayerTex.transform.localEulerAngles = new Vector3(0.87f,267,449);
+				PlayerTex.transform.localEulerAngles = new Vector3(-44.609f,372.284f,-5.201f);
 				break;
 			case 3:
 				direction = Vector3.up;
-				//PlayerTex.transform.localEulerAngles = new Vector3(-90,-1.1f,360);
+				PlayerTex.transform.localEulerAngles = new Vector3(-1.548f,273.281f,50.134f);
 				break;
 			case 4:
 				direction = Vector3.left;
-				//PlayerTex.transform.localEulerAngles = new Vector3(90,178,360);
+				PlayerTex.transform.localEulerAngles = new Vector3(47.533f,551.126f,11.76f);
+
 				break;
 			default:
 				break;

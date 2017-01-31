@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
 
-public class CubeControl : MonoBehaviour {
+public class CubeControl : MonoBehaviour, IPointerUpHandler,IPointerDownHandler {
 
 	public bool VerticalMove;
 	public bool HorizenMove;
@@ -49,7 +49,7 @@ public class CubeControl : MonoBehaviour {
 
 	}
 
-	public void OnMouseUp()
+	public void OnPointerUp(PointerEventData e)
 	{
 		if (Mouseflag == false)
 			return;
@@ -69,7 +69,7 @@ public class CubeControl : MonoBehaviour {
 
 	}
 
-	public void OnMouseDown()
+	public void OnPointerDown(PointerEventData e)
 	{		
 		Mouseflag = true;
 
