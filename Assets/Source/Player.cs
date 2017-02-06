@@ -52,7 +52,7 @@ public class Player : MonoBehaviour {
 
 			if(moveGuideMap [xPos, yPos] == 0     || moveGuideMap [xPos, yPos] == -1)
 			{
-				Debug.Log("arrive");
+				//Debug.Log("arrive");
 				break;				 
 			}
 
@@ -63,21 +63,21 @@ public class Player : MonoBehaviour {
 
 			switch (moveGuideMap [xPos, yPos]) {		
 			case 1:
+				
 				direction = Vector3.down;
 				PlayerTex.transform.localEulerAngles = new Vector3(0.577f,448.688f,-42.999f);
 				break;
 			case 2:
-				direction = Vector3.right;
-				PlayerTex.transform.localEulerAngles = new Vector3(-44.609f,372.284f,-5.201f);
+				direction = Vector3.left;
+				PlayerTex.transform.localEulerAngles = new Vector3(47.533f,551.126f,11.76f);
 				break;
-			case 3:
+			case 3:				
 				direction = Vector3.up;
 				PlayerTex.transform.localEulerAngles = new Vector3(-1.548f,273.281f,50.134f);
 				break;
 			case 4:
-				direction = Vector3.left;
-				PlayerTex.transform.localEulerAngles = new Vector3(47.533f,551.126f,11.76f);
-
+				direction = Vector3.right;
+				PlayerTex.transform.localEulerAngles = new Vector3(-44.609f,372.284f,-5.201f);
 				break;
 			default:
 				break;
@@ -87,12 +87,12 @@ public class Player : MonoBehaviour {
 			deltatime = 0;
 			while (true) {
 				//Debug.Log (deltatime);
-				if (deltatime > 0.23f)
+				if (deltatime > 0.25f)
 					break;
 				//Debug.Log ("movie");
 				transform.Translate (4 * Time.deltaTime * direction, Space.World);	
 				deltatime += Time.deltaTime;
-				yield return new WaitForSeconds (Time.deltaTime);
+				yield return new WaitForFixedUpdate();
 			}
 
 			xPos = Mathf.RoundToInt (transform.position.x);
