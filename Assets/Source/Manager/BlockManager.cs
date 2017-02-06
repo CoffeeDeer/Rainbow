@@ -31,17 +31,16 @@ public class BlockManager : MonoBehaviour {
 
 		//get blockCode
 		Transform map = GameObject.Find ("Map").transform;
-	
-		foreach(Transform child in map){
-			Vector3 localPos = child.transform.localPosition;
+		BlockObject[] blockObjects = map.GetComponentsInChildren<BlockObject> ();
+		foreach(BlockObject child in blockObjects){
+			Vector3 localPos = child.transform.position;
 			int x = Mathf.RoundToInt (localPos.x);
 			int y = Mathf.RoundToInt (localPos.y);
-
-			BlockObject childComp = child.GetComponent<BlockObject> ();
 			try{
-				arr [x, y] = childComp.GetBlockCode();
+				arr [x, y] = child.GetBlockCode();			
+
 			}catch(IndexOutOfRangeException e){
-				Debug.Log ("Error " + e.Message);
+				Debug.Log ("Error " + e.Message+"  "+x+"  "+y);
 			}
 		}
 
@@ -192,17 +191,18 @@ public class BlockManager : MonoBehaviour {
 		GameObject.Find ("Player");
 
 		BlockCode[,] blockMap = GetBlockMap ();	
+
+
+		int[,] movableMap = FindMovableMapAlg (blockMap, player.transform.position);	
 		/*
 		for (int i = 0; i < 4; i++) {
 			String temp = "";
 			for (int j = 0; j < 4; j++) {
-				temp += blockMap [i,j] + "\t";
+				temp += movableMap [i,j] + "\t";
 			}
 			Debug.Log (temp);
 		}
-		*/
-		int[,] movableMap = FindMovableMapAlg (blockMap, player.transform.position);	
-
+*/
 		RoadInfo[,] moveGuideMap = MakeMoveGuideMap (movableMap, clickedBlockPos,blockMap);
 
 

@@ -44,4 +44,16 @@ public class SceneChanger : MonoBehaviour {
 	public void MapSceneLoad(){
 		SceneManager.LoadScene ("Title");
 	}
+
+
+	public void MapSceneLoadDelay(){
+		StartCoroutine (TitleSceneload ());
+	}
+
+	private IEnumerator TitleSceneload(){
+		yield return new WaitForSeconds (2.0f);
+		MapSceneLoad ();
+		yield return 0;
+
+	}
 }

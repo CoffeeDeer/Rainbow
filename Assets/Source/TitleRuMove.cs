@@ -14,9 +14,7 @@ public class TitleRuMove : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		turn++;
-
-		if(turn <8)
-			StartCoroutine (temp (turn));
+		StartCoroutine (temp (turn));
 	}
 	
 	// Update is called once per frame
@@ -28,15 +26,25 @@ public class TitleRuMove : MonoBehaviour {
 
 	}
 	IEnumerator temp(int turnIndex){
-		for (int i = 1; i < turnIndex; i++) {
+
+		//Debug.Log (turnIndex);
+		int loop = turnIndex;	
+
+		for (int i = 1; i < loop; i++) {
 			Color [i - 1].GetComponent<Image> ().enabled = true;
-			Color aa = Color [turnIndex - 1].GetComponent<Image> ().color;
+			Color aa = Color [loop - 1].GetComponent<Image> ().color;
 			aa.a = 1.0f;
 			Color [i - 1].GetComponent<Image> ().color = aa;
 		}
 		Player.localPosition = Pos [turnIndex].localPosition;
 		yield return new WaitForSeconds (1.0f);
-		yield return StartCoroutine (TurnMove (turnIndex));
+
+		if (turnIndex == 8) {
+			Debug.Log ("CCCC");
+			yield return 0;
+		} else {
+			yield return StartCoroutine (TurnMove (turnIndex));
+		}
 	}
 
 	IEnumerator TurnMove(int turnIndex){

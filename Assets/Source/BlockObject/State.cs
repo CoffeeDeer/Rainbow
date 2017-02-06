@@ -83,7 +83,8 @@ namespace blockState{
 			//롱클릭 
 			else if (passedfTime >= 1 && LongClick == false) {
 				LongClick = true;
-				form.gameObject.GetComponent<CubeControl> ().LongClickEvent.Invoke ();
+				if(form.gameObject.GetComponent<CubeControl> () != null)
+					form.gameObject.GetComponent<CubeControl> ().LongClickEvent.Invoke ();
 			}
 			return this;
 		}
