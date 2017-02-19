@@ -42,7 +42,7 @@ public class CubeControl : MonoBehaviour, IPointerUpHandler,IPointerDownHandler 
 			GameObject center = this.gameObject;
 			if (parents != null)
 				center = parents.gameObject;
-						
+			
 			myStatus = myStatus.Update(minusVector,center.transform);
 
 		}

@@ -11,6 +11,7 @@ public class BlockRotate : MonoBehaviour {
 	public void StartRotatingRoutine(){
 
 		if (IsRotating == false) {
+			Debug.Log ("CC");
 			StartCoroutine(makeSmallCube());
 		}
 	}
@@ -24,7 +25,7 @@ public class BlockRotate : MonoBehaviour {
 
 		originalScale = this.transform.localScale;
 		Vector3 goalScale = new Vector3 (originalScale.x * 0.8f, originalScale.y * 0.8f, originalScale.z);
-		int loop = 15;
+		int loop = 5;
 		for (int i = 0; i < loop; i++) {
 			Vector3 changeVec = Vector3.Lerp (originalScale, goalScale, (i + 1) / (float)loop);
 
@@ -44,7 +45,7 @@ public class BlockRotate : MonoBehaviour {
 		goalRotation.z += 90;
 
 
-		int loop = 30;
+		int loop = 10;
 		for (int i = 0; i < loop; i++) {
 			Vector3 changeVec = Vector3.Lerp (originalRotation, goalRotation, (i + 1) / (float)loop);
 			//Debug.Log ((i + 1 / (float)loop));
@@ -59,7 +60,7 @@ public class BlockRotate : MonoBehaviour {
 		Vector3 nowScale = this.transform.localScale;
 		Vector3 goalScale = originalScale;
 
-		int loop = 15;
+		int loop = 5;
 		for (int i = 0; i < loop; i++) {
 			Vector3 changeVec = Vector3.Lerp (nowScale, goalScale, (i + 1) / (float)loop);
 			transform.localScale = changeVec;
@@ -68,7 +69,7 @@ public class BlockRotate : MonoBehaviour {
 
 
 		GetComponent<Rigidbody> ().isKinematic = false;
-		yield return new WaitForSeconds (0.2f);
+		yield return new WaitForSeconds (0.1f);
 
 		GetComponent<BlockObject> ().UpdateBlockDirectionCode ();//.UpdateBlockDirectionCode ();
 		IsRotating = false;

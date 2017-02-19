@@ -21,7 +21,7 @@ public class BlockManager : MonoBehaviour {
 	}
 
 	private BlockCode[,] GetBlockMap(){
-		BlockCode[,] arr = new BlockCode[5, 5];
+		BlockCode[,] arr = new BlockCode[7, 7];
 		//arr initialize
 		for (int i = 0; i < arr.GetLength (0); i++) {
 			for (int j = 0; j < arr.GetLength (1); j++) {
@@ -195,22 +195,22 @@ public class BlockManager : MonoBehaviour {
 
 		int[,] movableMap = FindMovableMapAlg (blockMap, player.transform.position);	
 		/*
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 7; i++) {
 			String temp = "";
-			for (int j = 0; j < 4; j++) {
+			for (int j = 0; j < 7; j++) {
 				temp += movableMap [i,j] + "\t";
 			}
 			Debug.Log (temp);
-		}
-*/
+		}*/
+
 		RoadInfo[,] moveGuideMap = MakeMoveGuideMap (movableMap, clickedBlockPos,blockMap);
 
 
 
 		int[,] resultGuideMap = new int[moveGuideMap.GetLength (0), moveGuideMap.GetLength (1)];
 
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {				
+		for (int i = 0; i < 7; i++) {
+			for (int j = 0; j < 7; j++) {				
 				resultGuideMap [i, j] = moveGuideMap [i, j].direction;
 			}
 		}
