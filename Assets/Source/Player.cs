@@ -65,19 +65,19 @@ public class Player : MonoBehaviour {
 			case 1:
 				
 				direction = Vector3.down;
-				PlayerTex.transform.localEulerAngles = new Vector3(0.577f,448.688f,-42.999f);
+				PlayerTex.transform.localEulerAngles = new Vector3(88.40601f,780.903f,-119.62f);
 				break;
 			case 2:
 				direction = Vector3.left;
-				PlayerTex.transform.localEulerAngles = new Vector3(47.533f,551.126f,11.76f);
+				PlayerTex.transform.localEulerAngles = new Vector3(1.925f,630.744f,-270.472f);
 				break;
 			case 3:				
 				direction = Vector3.up;
-				PlayerTex.transform.localEulerAngles = new Vector3(-1.548f,273.281f,50.134f);
+				PlayerTex.transform.localEulerAngles = new Vector3(-86.912f,642.607f,79.714f);
 				break;
 			case 4:
 				direction = Vector3.right;
-				PlayerTex.transform.localEulerAngles = new Vector3(-44.609f,372.284f,-5.201f);
+				PlayerTex.transform.localEulerAngles = new Vector3(-1.364f,809.257f,-90.479f);
 				break;
 			default:
 				break;
@@ -105,5 +105,56 @@ public class Player : MonoBehaviour {
 		//blockMan.SendMessage("SetNowUse",true,SendMessageOptions.DontRequireReceiver);
 
 		yield return 0;
+	}
+
+	void OnTriggerEnter(Collider coll){
+
+		if(coll.transform.CompareTag("TurnCubeInMultiple")){
+			coll.GetComponent<FixedBlock> ().IsPlayerOn = true;
+		}
+
+		if (coll.transform.CompareTag ("MovableSingle")) {
+			CubeControl ctrl = coll.gameObject.GetComponent<CubeControl> ();
+			if (ctrl != null) {
+				ctrl.enabled = false;
+			}
+		}
+
+		else if (coll.transform.CompareTag ("MovableMulti")) {
+			
+			Transform form = coll.transform;
+			foreach (Transform k in form) {				
+				CubeControl ctrl = k.GetComponent<CubeControl> ();
+				if (ctrl != null) {
+					ctrl.enabled = false;
+					k.gameObject.GetComponent<FixedBlock> ().enabled = true;				
+				}
+			}
+		}
+	}
+
+	void OnTriggerExit(Collider coll){
+
+		if(coll.transform.CompareTag("TurnCubeInMultiple")){
+			coll.GetComponent<FixedBlock> ().IsPlayerOn = false;
+		}
+
+		if (coll.transform.CompareTag ("MovableSingle")) {
+			CubeControl ctrl = coll.gameObject.GetComponent<CubeControl> ();
+			if (ctrl != null) {
+				ctrl.enabled = true;
+			}
+		}
+
+		else if (coll.transform.CompareTag ("MovableMulti")) {
+			Transform form = coll.transform;
+			foreach (Transform k in form) {
+				CubeControl ctrl = k.GetComponent<CubeControl> ();
+				if (ctrl != null) {
+					ctrl.enabled = true;
+					k.gameObject.GetComponent<FixedBlock> ().enabled = false;	
+				}
+			}
+		}
 	}
 }

@@ -11,21 +11,22 @@ public class TitleRuMove : MonoBehaviour {
 	public RectTransform Player;
 
 	public static int turn = -1;
-	// Use this for initialization
+	// Use this for initializations
 	void Start () {
-		turn++;
-		StartCoroutine (temp (turn));
+
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
 	}
 
-	public void StartRuMoving(){
-
+	public void StartRuMoveRoutine(int turnParam,bool RuMoveNeed){
+		turn = turnParam;
+		StartCoroutine (temp (turn,RuMoveNeed));
 	}
-	IEnumerator temp(int turnIndex){
+
+	IEnumerator temp(int turnIndex,bool RuMoveNeed){
 
 		//Debug.Log (turnIndex);
 		int loop = turnIndex;	
@@ -39,7 +40,8 @@ public class TitleRuMove : MonoBehaviour {
 		Player.localPosition = Pos [turnIndex].localPosition;
 		yield return new WaitForSeconds (1.0f);
 
-		if (turnIndex == 8) {
+
+		if (turnIndex == 8 || RuMoveNeed==false) {
 			Debug.Log ("CCCC");
 			yield return 0;
 		} else {
@@ -70,11 +72,12 @@ public class TitleRuMove : MonoBehaviour {
 			yield return new WaitForFixedUpdate ();
 		}
 
+		/*
 		yield return new WaitForSeconds (0.8f);
 		GameObject.Find ("SceneChanger").GetComponent<SceneChanger> ().StartSceneFadeoutEffect ();
 		yield return new WaitForSeconds (1.0f);
 		SceneManager.LoadScene (SceneName [turnIndex]);
-
+		*/
 		yield return 0;
 	}
 

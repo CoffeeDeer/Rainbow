@@ -8,11 +8,11 @@ using System.Collections.Generic;
 
 public class BlockManager : MonoBehaviour {
 
-	public Player player;
+	Player player;
 
 	// Use this for initialization
 	void Start () {
-	
+		player = GameObject.Find ("Player").GetComponent<Player> ();
 	}
 	
 	// Update is called once per frame
