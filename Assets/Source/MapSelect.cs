@@ -2,15 +2,17 @@
 using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections;
 
-public class Test : MonoBehaviour {
+public class MapSelect : MonoBehaviour {
 	//Cleae Stage  씬통신 위해 static  
-	private static int clear_Stage =7;
+	private static int clear_Stage =0;
 	private static int clear_Section = 4;
 
 	// 시작은 0스이지 4부터 시작 
-	static int challengeStage = 7;
+	static int challengeStage = 0;
 	static int challengeSection = 4;
 
 	int showStage = 0;
@@ -31,6 +33,9 @@ public class Test : MonoBehaviour {
 	};	// Use this for initialization
 	void Start () {
 
+		LoadStageData ();
+
+		Debug.Log (challengeStage +" "+challengeSection);
 		//스테이지 클리어 적용 
 		if (clear_Stage == challengeStage && clear_Section == challengeSection) {
 			challengeSection++;
@@ -39,6 +44,8 @@ public class Test : MonoBehaviour {
 			if (challengeSection > 4 || (challengeSection == 4 && Title [challengeStage - 1, challengeSection - 1] == null)) {
 				challengeSection = 1;
 				challengeStage += 1;
+
+				SaveStageData ();
 
 				//섹션이 없그레이드 되엇을때 이동
 				GameObject.FindObjectOfType<TitleRuMove> ().StartRuMoveRoutine (challengeStage - 1, true);
@@ -131,5 +138,39 @@ public class Test : MonoBehaviour {
 	public static void ClearStageUpdate(int stage, int section){
 		clear_Stage = stage;
 		clear_Section = section;
+	}
+
+	private void SaveStageData(){
+		BinaryFormatter bf = new BinaryFormatter ();
+		FileStream file = File.Create (Application.persistentDataPath + "/SaveData.dat");
+		StageData data = new StageData (challengeStage, challengeSection);
+
+		bf.Serialize (file, data);
+		file.Close ();
+
+		Debug.Log ("Save Data");
+	}
+
+	private void LoadStageData(){
+		if(File.Exists(Application.persistentDataPath+"/SaveData.dat")){
+			Debug.Log ("Load Data");
+			BinaryFormatter bf = new BinaryFormatter ();
+			FileStream file = File.Open (Application.persistentDataPath + "/SaveData.dat", FileMode.Open);
+			StageData data = (StageData)bf.Deserialize(file);
+
+			file.Close();
+			challengeStage = data.stage;
+			challengeSection = data.section;
+		}
+	}
+
+	[System.Serializable]
+	private struct StageData{
+		public int stage;
+		public int section;
+		public StageData(int Stage,int Section){
+			stage=Stage;
+			section=Section;
+		}
 	}
 }

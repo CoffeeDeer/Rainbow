@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using System.Collections;
 using System.Collections.Generic;
 
-public class Reword : MonoBehaviour {
+public class TriggerCollisionEvent : MonoBehaviour {
 
 	public List<UnityEvent> RewordEventList;
 	public List<float>      RewordEventDelayTimeList;
