@@ -49,9 +49,7 @@ public class RewordCollisionEvent : MonoBehaviour {
 
 	IEnumerator EventRoutine(){
 		int i = 0;
-		Debug.Log ("CCaC");
 		foreach (UnityEvent k in RewordEventList) {
-			Debug.Log ("CCC");
 			if(k != null)
 				k.Invoke ();
 			yield return new WaitForSeconds(RewordEventDelayTimeList[i++]);

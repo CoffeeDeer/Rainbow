@@ -7,6 +7,9 @@ public class SceneChanger : MonoBehaviour {
 
 	public GameObject FadeOutBlackImage;
 
+	public int stage = -1;
+	public int section = -1;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -42,7 +45,11 @@ public class SceneChanger : MonoBehaviour {
 	}
 
 	public void MapSceneLoad(){
-		SceneManager.LoadScene ("Title");
+		if (stage == -1 || section == -1)
+			Debug.LogError ("scene chagenr stage&section is -1");
+
+		MapSelect.ClearStageUpdate (stage, section);
+		SceneManager.LoadScene ("MapSelect");
 	}
 
 
