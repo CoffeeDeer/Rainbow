@@ -8,12 +8,12 @@ using System.Collections;
 
 public class MapSelect : MonoBehaviour {
 	//Cleae Stage  씬통신 위해 static  
-	private static int clear_Stage =0;
-	private static int clear_Section = 4;
+	private static int clear_Stage =1;
+	private static int clear_Section = 2;
 
 	// 시작은 0스이지 4부터 시작 
-	static int challengeStage = 0;
-	static int challengeSection = 4;
+	static int challengeStage = 1;
+	static int challengeSection = 3;
 
 	int showStage = 0;
 
@@ -22,7 +22,7 @@ public class MapSelect : MonoBehaviour {
 	public Button[] upDownButton = new Button[2];
 
 	//3,4,4,3,3,3,4
-	public string[,] Title = {
+	private string[,] Title = {
 		{"Stage-1_1","Stage-1_2","Stage-1_3",null},
 		{"Stage-2_1","Stage-2_2","Stage-2_3","Stage-2_4"},
 		{"Stage-3_1","Stage-3_2","Stage-3_3","Stage-3_4"},
@@ -31,11 +31,12 @@ public class MapSelect : MonoBehaviour {
 		{"Stage-6_1","Stage-6_2","Stage-6_3",null},
 		{"Stage-7_1","Stage-7_2","Stage-7_3","Stage-7_4"},
 	};	// Use this for initialization
+
 	void Start () {
 
-		LoadStageData ();
+		//LoadStageData ();
 
-		Debug.Log (challengeStage +" "+challengeSection);
+		//Debug.Log (challengeStage +" "+challengeSection);
 		//스테이지 클리어 적용 
 		if (clear_Stage == challengeStage && clear_Section == challengeSection) {
 			challengeSection++;
@@ -45,7 +46,7 @@ public class MapSelect : MonoBehaviour {
 				challengeSection = 1;
 				challengeStage += 1;
 
-				SaveStageData ();
+				//SaveStageData ();
 
 				//섹션이 없그레이드 되엇을때 이동
 				GameObject.FindObjectOfType<TitleRuMove> ().StartRuMoveRoutine (challengeStage - 1, true);
@@ -89,7 +90,7 @@ public class MapSelect : MonoBehaviour {
 		if (ShowStage > challengeStage){
 			stageEventUpdate = false;
 		}
-
+			
 		for (int i = 0; i < 4; i++) {
 
 			//Text Change
@@ -106,9 +107,17 @@ public class MapSelect : MonoBehaviour {
 
 			if (stageEventUpdate) {
 				string temp = Title[showStage-1,i];
+				StageData stageData = new StageData (showStage - 1, i);
 
+				//리스너 등록
 				button [i].onClick.AddListener (delegate {
-					Debug.Log("Stage "+ temp + "Load");
+					if(stageData.section == 0 ){
+						//DialogSceneLoad.LoadDialogFromMap(stageData);
+						//SceneManager.LoadScene("DialogScene");
+					}
+					else{
+						Debug.Log("sss  "+ temp);	
+					}
 				});
 			}
 
@@ -119,7 +128,6 @@ public class MapSelect : MonoBehaviour {
 
 		}
 	}
-
 
 	public void showStageChange(bool isLeft){
 
@@ -165,7 +173,7 @@ public class MapSelect : MonoBehaviour {
 	}
 
 	[System.Serializable]
-	private struct StageData{
+	public struct StageData{
 		public int stage;
 		public int section;
 		public StageData(int Stage,int Section){
