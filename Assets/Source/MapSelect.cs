@@ -8,80 +8,88 @@ using System.Collections;
 
 public class MapSelect : MonoBehaviour {
 	//Cleae Stage  씬통신 위해 static  
-	private static int clear_Stage =1;
-	private static int clear_Section = 2;
+	int clear_Stage;
+	int clear_Section;
 
 	// 시작은 0스이지 4부터 시작 
-	static int challengeStage = 1;
-	static int challengeSection = 3;
+	int challengeStage;
+	int challengeSection;
 
 	int showStage = 0;
 
-	public Button[] button = new Button[4];
+	//3,4,4,3,3,3,4
+	public static readonly int[] stageSize = {3,4,4,3,3,3,4};
 
+	public Button[] button = new Button[4];
 	public Button[] upDownButton = new Button[2];
 
-	//3,4,4,3,3,3,4
-	private string[,] Title = {
-		{"Stage-1_1","Stage-1_2","Stage-1_3",null},
-		{"Stage-2_1","Stage-2_2","Stage-2_3","Stage-2_4"},
-		{"Stage-3_1","Stage-3_2","Stage-3_3","Stage-3_4"},
-		{"Stage-4_1","Stage-4_2","Stage-4_3"   ,null},
-		{"Stage-5_1","Stage-5_2","Stage-5_3",null},
-		{"Stage-6_1","Stage-6_2","Stage-6_3",null},
-		{"Stage-7_1","Stage-7_2","Stage-7_3","Stage-7_4"},
-	};	// Use this for initialization
+
+	bool[,] dialogSceneSkipArray;
+
+	SaveData savedata;
 
 	void Start () {
+		SaveManager saveManager = new SaveManager();
 
-		//LoadStageData ();
+		/*
+		saveManager.updateChallengeData (6, 3);
+		saveManager.updateClearData (6, 3);
+		*/
 
-		//Debug.Log (challengeStage +" "+challengeSection);
+		savedata = saveManager.LoadPlayData ();
+
+		Debug.Log (savedata.challengeStageData + "   " + savedata.nowClearStageData);
+	
+		challengeStage = savedata.challengeStageData.stage;
+		challengeSection = savedata.challengeStageData.section; 
+		clear_Stage = savedata.nowClearStageData.stage;
+		clear_Section = savedata.nowClearStageData.section;
+
+
 		//스테이지 클리어 적용 
 		if (clear_Stage == challengeStage && clear_Section == challengeSection) {
 			challengeSection++;
 
 			//if end section clear 
-			if (challengeSection > 4 || (challengeSection == 4 && Title [challengeStage - 1, challengeSection - 1] == null)) {
-				challengeSection = 1;
-				challengeStage += 1;
-
-				//SaveStageData ();
-
+			if (challengeStage == -1 || challengeSection >= stageSize[challengeStage] ){//|| (Title [challengeStage, challengeSection] == null)) {
+				challengeSection = 0;
+				challengeStage += 1;			
 				//섹션이 없그레이드 되엇을때 이동
-				GameObject.FindObjectOfType<TitleRuMove> ().StartRuMoveRoutine (challengeStage - 1, true);
+				GameObject.FindObjectOfType<TitleRuMove> ().StartRuMoveRoutine (challengeStage, true);
 			} else {
-				GameObject.FindObjectOfType<TitleRuMove> ().StartRuMoveRoutine (challengeStage, false);
+				GameObject.FindObjectOfType<TitleRuMove> ().StartRuMoveRoutine (challengeStage+1, false);
 			}
 
+			saveManager.updateChallengeData (challengeStage, challengeSection);
+
 		} else {
-			GameObject.FindObjectOfType<TitleRuMove> ().StartRuMoveRoutine (challengeStage, false);
+			GameObject.FindObjectOfType<TitleRuMove> ().StartRuMoveRoutine (challengeStage+1, false);
 		}
 
 
 		showStage = challengeStage;
 
 		//end 7-4 clear
-		if(showStage > 7){
-			showStage = 7;
+		if(showStage > 6){
+			showStage = 6;
+			//epilogue 
+			//if(!savedata.clearDataArray[8,0])
+			{
+				StartCoroutine (endCoroutine ());
+			}
 		}
 
 		UpdateStageSelectButton (showStage);
 	}
 
-	public int a;
-	public int b;
+
 	// Update is called once per frame
 	void Update () {
-		/*
-		if (Input.GetKeyDown (KeyCode.Space)) {
-			ClearStageUpdate (a, b);
-			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
-		}
-		*/
 	}
 
 	void UpdateStageSelectButton(int ShowStage){
+
+
 
 		//if this val is false  ,each Stage button Event is null 
 		bool stageEventUpdate = true;
@@ -90,15 +98,15 @@ public class MapSelect : MonoBehaviour {
 		if (ShowStage > challengeStage){
 			stageEventUpdate = false;
 		}
-			
+		Debug.Log (showStage);
 		for (int i = 0; i < 4; i++) {
-
 			//Text Change
-			if (Title [ShowStage - 1, i] != null) {
-				button[i].GetComponentInChildren<Text>().text = "      "+ShowStage.ToString() + " - " + (i+1).ToString();
+			if (i < stageSize[showStage]) {
+				button[i].GetComponentInChildren<Text>().text = "      "+(ShowStage+1).ToString() + " - " + (i+1).ToString();
 			}
 			else{
 				button[i].GetComponentInChildren<Text>().text = "";
+				stageEventUpdate = false;
 			}
 
 			//Remove Listener
@@ -106,24 +114,28 @@ public class MapSelect : MonoBehaviour {
 
 
 			if (stageEventUpdate) {
-				string temp = Title[showStage-1,i];
-				StageData stageData = new StageData (showStage - 1, i);
+				
+				SaveData.STAGEDATA stageData = new SaveData.STAGEDATA();
+				stageData.SetValue(showStage,i);
 
 				//리스너 등록
 				button [i].onClick.AddListener (delegate {
-					if(stageData.section == 0 ){
-						//DialogSceneLoad.LoadDialogFromMap(stageData);
-						//SceneManager.LoadScene("DialogScene");
+					Debug.Log(savedata.clearDataArray[stageData.stage,stageData.section]);
+					if(!savedata.clearDataArray[stageData.stage,stageData.section] && stageData.section == 0){	
+						Debug.Log(stageData);
+						DialogSceneLoad.UpdataFromStageData(stageData.stage,stageData.section);
+						GameObject.FindObjectOfType<SceneChanger>().StageLoad("DialogScene");
 					}
 					else{
-						Debug.Log("sss  "+ temp);	
+						GameObject.FindObjectOfType<SceneChanger>().StageLoad(stageData);
 					}
 				});
+				 
 			}
 
-			if (i == challengeSection - 1 && showStage == challengeStage) {
-				button[i].GetComponentInChildren<Text>().text += "  new!";
+			if (i == challengeSection && showStage == challengeStage) {
 				stageEventUpdate = false;
+				button[i].GetComponentInChildren<Text>().text += "  new!";
 			}
 
 		}
@@ -132,53 +144,29 @@ public class MapSelect : MonoBehaviour {
 	public void showStageChange(bool isLeft){
 
 		if (isLeft) {
-			if (showStage > 1)
+			if (showStage > 0)
 				showStage--;
 		}
 		if (!isLeft) {			
-			if (showStage <7  && showStage < challengeStage)
+			if (showStage <6  && showStage < challengeStage)
 				showStage++;
 		}
 
 		UpdateStageSelectButton (showStage);
+	}		
+
+	//jump endDialog
+	private IEnumerator endCoroutine(){
+
+		Image clickBlock = GameObject.Find ("ClickBlock").GetComponent<Image>();
+		clickBlock.enabled = true;
+
+		yield return new WaitForSeconds (3.0f);
+
+		DialogSceneLoad.UpdataFromStageData (8, 0);
+		GameObject.FindObjectOfType<SceneChanger> ().StageLoad ("DialogScene");
+		yield return 0;
+
 	}
 
-	public static void ClearStageUpdate(int stage, int section){
-		clear_Stage = stage;
-		clear_Section = section;
-	}
-
-	private void SaveStageData(){
-		BinaryFormatter bf = new BinaryFormatter ();
-		FileStream file = File.Create (Application.persistentDataPath + "/SaveData.dat");
-		StageData data = new StageData (challengeStage, challengeSection);
-
-		bf.Serialize (file, data);
-		file.Close ();
-
-		Debug.Log ("Save Data");
-	}
-
-	private void LoadStageData(){
-		if(File.Exists(Application.persistentDataPath+"/SaveData.dat")){
-			Debug.Log ("Load Data");
-			BinaryFormatter bf = new BinaryFormatter ();
-			FileStream file = File.Open (Application.persistentDataPath + "/SaveData.dat", FileMode.Open);
-			StageData data = (StageData)bf.Deserialize(file);
-
-			file.Close();
-			challengeStage = data.stage;
-			challengeSection = data.section;
-		}
-	}
-
-	[System.Serializable]
-	public struct StageData{
-		public int stage;
-		public int section;
-		public StageData(int Stage,int Section){
-			stage=Stage;
-			section=Section;
-		}
-	}
 }

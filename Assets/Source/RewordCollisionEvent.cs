@@ -11,7 +11,6 @@ public class RewordCollisionEvent : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
 		//Debug.Log (GameObject.FindObjectOfType<GroundPanelManager> ());
 		for (int i = 0; i < 5; i++) {
 			RewordEventList [i] = new UnityEvent ();
@@ -25,13 +24,15 @@ public class RewordCollisionEvent : MonoBehaviour {
 		RewordEventList [1].AddListener (delegate{reword.GetComponent<Animator> ().enabled = true;});
 		RewordEventList [1].AddListener (delegate{GameObject.Find("Player").gameObject.SetActive(false);});
 		RewordEventList [1].AddListener (delegate{reword.GetComponent<RotatingObject>().enabled = false;});
+		RewordEventList [1].AddListener (delegate{GameObject.Find("SoundManager").GetComponent<AudioManager>().playclear();});
 
 		Transform rewordHalo = reword.transform.GetChild (0);
 		RewordEventList [2].AddListener (delegate{rewordHalo.gameObject.SetActive(true);});
 
-		RewordEventList [3].AddListener (GameObject.FindObjectOfType<SceneChanger> ().StartSceneFadeoutEffect);
+		//무조건 맵 셀렉트로 넘어가는게 아니다. 
+		RewordEventList [3].AddListener (delegate{GameObject.FindObjectOfType<SceneChanger> ().StageEnd();});
 
-		RewordEventList [4].AddListener (GameObject.FindObjectOfType<SceneChanger> ().MapSceneLoad);
+		//RewordEventList [4].AddListener (GameObject.FindObjectOfType<SceneChanger> ().MapSceneLoad);
 
 	}
 
