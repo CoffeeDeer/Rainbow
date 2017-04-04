@@ -9,8 +9,8 @@
 /[Bb]uilds/
 /Assets/AssetStoreTools*
 /Assets/2DLightAsset/
-/Resources/
-/Scene/
+/Assets/Resources/
+/Assets/Scene/
 /ProjectSettings/
 
 *.meta
